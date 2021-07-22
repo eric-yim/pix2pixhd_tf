@@ -1,0 +1,56 @@
+is_train:  True
+logging:
+  path: "main.log"
+  format: "%(asctime)s: %(message)s"
+data:
+  train_globs: ['/home/ubuntu/pix2pix/celeba_hq/train_A/*.jpg']
+  val_globs: ['/home/ubuntu/pix2pix/celeba_hq/val_A/*.jpg']
+  train_target_dir: '/home/ubuntu/pix2pix/celeba_hq/train_B/'
+  val_target_dir: '/home/ubuntu/pix2pix/celeba_hq/val_B/'
+transforms:
+  resize_to: 256
+  resize_to_large: 256
+train:
+  discriminator_loss:
+    gan_feat_loss: True
+    n_layers_D: 3
+    num_D: 2
+    lambda_feat: 10.0
+  use_lsgan: False
+  use_vgg_loss: True
+  vgg_loss:
+    input_shape: [256,256,3]
+  generator:
+    image_size: 256
+    input_nc: 3
+    output_nc: 3
+    ngf: 64
+    netG: global
+    n_downsample_global: 4
+    n_blocks_global: 9
+    n_local_enhancers: 1
+    n_blocks_local: 3
+    norm: instance
+  discriminator:
+    image_size: 256
+    input_nc: 6
+    ndf: 64
+    n_layers_D: 3
+    norm: instance
+    use_sigmoid: False
+    num_D: 2
+  hyperparameters:
+    lr: 0.0002
+    beta_1: 0.5
+  batch_size: 8
+  buffer_size: 100
+  start_epoch: 0
+  epochs: 100
+  epochs_decay: 100
+  print_freq: 100
+  save_freq: 10
+  resume_latest: True
+save_paths:
+  checkpoint_dir: 'checkpoints/'
+  sample_dir: 'samples/'
+  sample_format: 'epoch_{}.png'
